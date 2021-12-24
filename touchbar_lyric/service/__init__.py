@@ -18,6 +18,7 @@ from strsimpy.normalized_levenshtein import NormalizedLevenshtein
 from touchbar_lyric import Song
 from touchbar_lyric.service.netease import netease_music_search
 from touchbar_lyric.service.qq import qq_music_search
+from touchbar_lyric.service.lyricsx import lyricsx_music_search
 from diskcache import FanoutCache
 
 CACHE = os.path.join(os.path.expanduser("~"), ".cache")
@@ -31,6 +32,7 @@ cache = FanoutCache(CACHE, timeout=2)
 @cache.memoize(typed=True, expire=None, tag="lyric")
 def universal_search(title: str, artists: str) -> List[Song]:  # pragma: no cover
     songs = []
+    songs.extend(lyricsx_music_search(title, artists))
     songs.extend(qq_music_search(title, artists))
     songs.extend(netease_music_search(title, artists))
 
